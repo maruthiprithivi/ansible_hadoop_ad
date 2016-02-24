@@ -1,0 +1,20 @@
+[sssd]
+config_file_version = 2
+reconnection_retries = 3
+sbus_timeout = 30
+services = nss, pam
+domains = {{ domainname|upper }}
+
+[nss]
+filter_groups = root
+filter_users = root
+reconnection_retries = 3
+
+[pam]
+reconnection_retries = 3
+
+[domain/{{ domainname|upper }}]
+debug_level = 0
+id_provider = ad
+ldap_id_mapping = False
+

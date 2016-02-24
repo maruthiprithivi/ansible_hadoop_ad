@@ -1,0 +1,5 @@
+---
+- hosts: oozie
+  roles:
+    - postgresql_server
+    - oozie_db

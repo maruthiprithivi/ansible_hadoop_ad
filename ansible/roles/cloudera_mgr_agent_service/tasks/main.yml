@@ -1,0 +1,3 @@
+---
+- name: ensure cloudera-scm-agent is running
+  service: name=cloudera-scm-agent state=running enabled=yes

@@ -1,0 +1,24 @@
+---
+- name: disable transparent huge pages in grub.conf
+  lineinfile: dest=/etc/grub.conf
+              backup=True
+              backrefs=True
+              state=present
+              regexp='(^\s+kernel(\s+(?!transparent_hugepage=never)[\w=/\-\.]+)*)\s*$'
+              line='\1 transparent_hugepage=never'
+
+- name: test if transparent huge pages is enabled in /sys/kernel/mm/transparent_hugepage/enabled
+  command: /bin/egrep  '\[never\]' /sys/kernel/mm/transparent_hugepage/enabled
+  register: transparent_hugepage_enabled_result
+  ignore_errors: True
+- name: disable transparent huge pages in /sys/kernel/mm/transparent_hugepage/enabled
+  shell: '/bin/echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+  when: transparent_hugepage_enabled_result|failed
+
+- name: test if transparent huge pages is enabled in /sys/kernel/mm/redhat_transparent_hugepage/defrag
+  command: /bin/egrep  '\[never\]' /sys/kernel/mm/redhat_transparent_hugepage/defrag
+  register: transparent_hugepage_defrag_enabled_result
+  ignore_errors: True
+- name: disable transparent huge pages in /sys/kernel/mm/redhat_transparent_hugepage/defrag
+  shell: '/bin/echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag'
+  when: transparent_hugepage_defrag_enabled_result|failed

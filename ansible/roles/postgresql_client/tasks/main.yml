@@ -1,0 +1,7 @@
+---
+- name: add the postgresql yum repo
+  command: "rpm -i {{ pgsql_yum_repo_rpm }} creates=/etc/yum.repos.d/pgdg-94-centos.repo"
+
+- name: ensure postgresql is at the latest version
+  yum: pkg={{ pgsql_pkg }} state=latest
+

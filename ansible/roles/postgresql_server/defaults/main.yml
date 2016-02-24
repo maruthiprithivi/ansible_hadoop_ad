@@ -1,0 +1,12 @@
+---
+pgsql_yum_repo_rpm: http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-2.noarch.rpm
+pgsql_server_pkg: postgresql94-server
+pg_data: /var/lib/pgsql/9.4/data
+pgsql_service: postgresql-9.4
+non_local_connections: true
+pg_hbas:
+- type: host
+  database: all
+  user: all
+  address: 0.0.0.0/0
+  method: md5

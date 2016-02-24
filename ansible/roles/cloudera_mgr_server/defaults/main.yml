@@ -1,0 +1,9 @@
+---
+scm_db_type: postgresql
+scm_db_name: scm
+scm_db_user: scm
+scm_db_user_password: scm_password
+scm_db_host: cdhmgr01.{{ domainname }}
+scm_db_port: 5432
+scm_done_file: '/etc/cloudera-scm-server/db.properties.~1~'
+

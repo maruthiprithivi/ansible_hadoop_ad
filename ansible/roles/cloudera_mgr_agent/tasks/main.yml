@@ -1,0 +1,10 @@
+---
+- name: ensure cloudera-manager-agent is at the latest version
+  yum: pkg=cloudera-manager-agent state=latest
+
+- name: ensure cloudera-manager-daemons is at the latest version
+  yum: pkg=cloudera-manager-daemons state=latest
+
+- name: configure cloudera manager agent
+  template: src=config.ini.j2 dest=/etc/cloudera-scm-agent/config.ini owner=root group=root mode=0644
+

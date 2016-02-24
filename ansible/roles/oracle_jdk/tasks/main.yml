@@ -1,0 +1,48 @@
+---
+- name: ensure wget is at the latest version
+  yum: pkg=wget state=latest
+
+- name: ensure unzip is at the latest version
+  yum: pkg=unzip state=latest
+
+- name: test if jdk installed
+  command: rpm -q {{ jdk_rpm_check }}
+  register: jdk_rpm_check_result
+  ignore_errors: True
+
+- name: download jdk
+  command: "wget -q -O {{ jdk_download_folder }}/{{ jdk_rpm }} --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie' {{ jdk_download_url }}"
+  when: jdk_rpm_check_result|failed
+
+- name: install jdk rpm
+  command: "rpm -i {{ jdk_download_folder }}/{{ jdk_rpm }}"
+  when: jdk_rpm_check_result|failed
+
+- name: clean up jdk download
+  file: state=absent path={{ jdk_download_folder }}/{{ jdk_rpm }}
+  when: jdk_rpm_check_result|failed
+
+- name: download jce
+  command: "wget -q -O {{ jce_download_folder }}/{{ jce_archive }} --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie' {{ jce_download_url }}"
+  when: jdk_rpm_check_result|failed and add_jce
+
+- name: unpack jce
+  command: "unzip -d {{ jce_download_folder }} {{ jce_download_folder }}/{{ jce_archive }}"
+  when: jdk_rpm_check_result|failed and add_jce
+
+- name: install jce local_policy.jar
+  command: "mv {{ jce_unpack_dir }}/local_policy.jar {{ jce_policy_dir }}"
+  when: jdk_rpm_check_result|failed and add_jce
+
+- name: install jce US_export_policy.jar
+  command: "mv {{ jce_unpack_dir }}/US_export_policy.jar {{ jce_policy_dir }}"
+  when: jdk_rpm_check_result|failed and add_jce
+
+- name: clean up jce download
+  file: state=absent path={{ jce_download_folder }}/{{ jce_archive }}
+  when: jdk_rpm_check_result|failed and add_jce
+
+- name: clean up jce unpack dir
+  file: state=absent path={{ jce_unpack_dir }}
+  when: jdk_rpm_check_result|failed and add_jce
+

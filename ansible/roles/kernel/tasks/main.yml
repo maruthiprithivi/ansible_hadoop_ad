@@ -1,0 +1,12 @@
+---
+- name: remove bad net.bridge.bridge-nf-call-ip6tables entry
+  action: sysctl name=net.bridge.bridge-nf-call-ip6tables state=absent reload=no
+
+- name: remove bad net.bridge.bridge-nf-call-iptables entry
+  action: sysctl name=net.bridge.bridge-nf-call-iptables state=absent reload=no
+
+- name: remove bad net.bridge.bridge-nf-call-arptables entry
+  action: sysctl name=net.bridge.bridge-nf-call-arptables state=absent reload=no
+
+- name: set vm.swappiness
+  action: sysctl name=vm.swappiness value={{ swappiness }} state=present

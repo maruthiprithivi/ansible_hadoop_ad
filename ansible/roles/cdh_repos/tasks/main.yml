@@ -1,0 +1,4 @@
+---
+- name: configure cdh repo
+  template: src=cloudera-manager.repo.j2 dest=/etc/yum.repos.d/cloudera-manager.repo owner=root group=root mode=0644
+

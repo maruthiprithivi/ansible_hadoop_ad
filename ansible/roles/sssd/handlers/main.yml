@@ -1,0 +1,7 @@
+---
+- name: run cacertdir_rehash on ldap cacerts
+  command: "cacertdir_rehash /etc/openldap/cacerts"
+
+- name: restart sssd
+  service: name=sssd state=restarted
+

@@ -1,0 +1,4 @@
+---
+- hosts: cdh
+  roles:
+    - cloudera_mgr_agent

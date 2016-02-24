@@ -1,0 +1,11 @@
+---
+jdk_download_url: http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64.rpm
+jdk_download_folder: /tmp
+jdk_rpm: jdk-8u65-linux-x64.rpm
+jdk_rpm_check: jdk1.8.0_65-1.8.0_65-fcs.x86_64
+add_jce: true
+jce_download_url: http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
+jce_archive: jce_policy-8.zip
+jce_download_folder: /tmp
+jce_unpack_dir: "{{ jce_download_folder }}/UnlimitedJCEPolicyJDK8"
+jce_policy_dir: /usr/java/jdk1.8.0_65/jre/lib/security

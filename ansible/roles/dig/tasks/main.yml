@@ -1,0 +1,3 @@
+---
+- name: ensure bind-utils is at the latest version
+  yum: pkg=bind-utils state=latest

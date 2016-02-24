@@ -1,0 +1,4 @@
+---
+- include: hive.yml
+- include: oozie.yml
+- include: sqoop.yml

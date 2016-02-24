@@ -1,0 +1,15 @@
+---
+- name: set system hostname
+  hostname: name="{{ hostname }}.{{ domainname }}"
+
+- name: set loopback in hosts
+  lineinfile: dest=/etc/hosts regexp="^127\.0\.0\.1\s+.*" line="127.0.0.1         localhost localhost.{{ domainname }}" state=present
+
+- name: remove ipv6 loopback in hosts
+  lineinfile: dest=/etc/hosts regexp="^::1\s+.*" state=absent
+
+- name: add primary hostname in hosts
+  lineinfile: dest=/etc/hosts regexp="^{{ primary_ip }}\s+.*" line="{{ primary_ip }}    {{ hostname }}.{{ domainname }} {{ hostname }}" state=present
+
+- name: set domainname in resolv
+  lineinfile: dest=/etc/resolv.conf regexp="^search\s+.*" line="search {{ domainname }}" state=present

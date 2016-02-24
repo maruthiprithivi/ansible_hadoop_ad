@@ -1,0 +1,22 @@
+---
+- name: add the postgresql yum repo
+  command: "rpm -i {{ pgsql_yum_repo_rpm }} creates=/etc/yum.repos.d/pgdg-94-centos.repo"
+
+- name: ensure postgresql-server is at the latest version
+  yum: pkg={{ pgsql_server_pkg }} state=latest
+
+- name: initialise pgdata
+  command: "service {{ pgsql_service }} initdb creates={{ pg_data }}/PG_VERSION"
+
+- name: enabled non_local_connections
+  lineinfile: dest="{{ pg_data }}/postgresql.conf" regexp="^.*listen_addresses" line="listen_addresses = \'*\'"
+  when: non_local_connections
+
+- name: ensure posgresql-server is running
+  service: name={{ pgsql_service }} state=running enabled=yes
+
+- name: configure pg_hba.conf
+  template: src=pg_hba.conf.j2 dest={{ pg_data }}/pg_hba.conf owner=postgres group=postgres mode=0600
+  notify:
+    - reload postgres-server
+

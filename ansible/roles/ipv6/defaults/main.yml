@@ -1,0 +1,7 @@
+---
+disable_ipv6: 0
+modprobe_ipv6: present
+NETWORKING_IPV6_on: 'yes'
+NETWORKING_IPV6_on_present: absent
+IPV6INIT_on: 'yes'
+IPV6INIT_on_present: absent

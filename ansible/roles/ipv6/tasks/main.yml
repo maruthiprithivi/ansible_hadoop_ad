@@ -1,0 +1,19 @@
+---
+- name: set net.ipv6.conf.all.disable_ipv6
+  action: sysctl name=net.ipv6.conf.all.disable_ipv6  value={{ disable_ipv6 }} state=present
+
+- name: set net.ipv6.conf.default.disable_ipv6
+  action: sysctl name=net.ipv6.conf.default.disable_ipv6  value={{ disable_ipv6 }} state=present
+
+- name: set net.ipv6.conf.lo.disable_ipv6
+  action: sysctl name=net.ipv6.conf.lo.disable_ipv6   value={{ disable_ipv6 }} state=present
+
+- name: NETWORKING_IPV6 in sysconfig network
+  lineinfile: dest=/etc/sysconfig/network regexp=^NETWORKING_IPV6= line=NETWORKING_IPV6={{ NETWORKING_IPV6_on }} state={{ NETWORKING_IPV6_on_present }}
+  notify:
+    - restart network
+
+- name: IPV6INIT in sysconfig network
+  lineinfile: dest=/etc/sysconfig/network regexp=^IPV6INIT= line=IPV6INIT={{ IPV6INIT_on }} state={{ IPV6INIT_on_present }}
+  notify:
+    - restart network

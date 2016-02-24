@@ -1,0 +1,5 @@
+---
+- hosts: sqoop
+  roles:
+    - postgresql_server
+    - sqoop_db

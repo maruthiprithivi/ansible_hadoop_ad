@@ -1,0 +1,2 @@
+- name: configure limits
+  template: src=limits.conf.j2 dest=/etc/security/limits.d/{{ limits_d_filename }} owner=root group=root mode=0644

@@ -1,0 +1,13 @@
+target/
+.classpath
+.project
+.wtpmodules
+.DS_Store
+log/
+.settings/
+output/
+*.swp
+pems/
+cdh_pems/
+certs/
+ansible/roles/sssd/files/

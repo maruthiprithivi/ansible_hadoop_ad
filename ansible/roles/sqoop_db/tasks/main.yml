@@ -1,0 +1,12 @@
+---
+- name: copy sqoop DB setup sql script
+  template: src=create_sqoop_db.sql.j2 dest=/tmp/create_sqoop_db.sql owner=postgres group=postgres mode=0644
+
+- name: run sqoop DB setup sql script
+  command: "psql -f /tmp/create_sqoop_db.sql"
+  sudo: yes
+  sudo_user: postgres
+
+- name: remove sqoop DB setup sql script
+  file: state=absent path=/tmp/create_sqoop_db.sql
+

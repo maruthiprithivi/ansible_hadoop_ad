@@ -1,0 +1,3 @@
+---
+- include: cloudera_mgr_start_server.yml
+- include: cloudera_mgr_start_agent.yml

@@ -1,0 +1,50 @@
+---
+selinux_state: state=disabled
+iptables_state: stopped
+iptables_enabled: no
+
+disable_ipv6: 1
+modprobe_ipv6: absent
+NETWORKING_IPV6_on: 'no'
+NETWORKING_IPV6_on_present: present
+IPV6INIT_on: 'no'
+IPV6INIT_on_present: present
+
+domainname: cdh.hadoop
+
+ad_ip: 10.100.128.131
+ad_hostname: "ad01.{{ domainname }}"
+
+dns_server: "{{ ad_ip }}"
+
+cloudera_mgr_server: cdhmgr01.cdh.hadoop
+
+swappiness: 10
+
+limits_d_filename: cdh.conf
+limits:
+- domain: hdfs
+  type: '-'
+  item: nofile
+  value:  32768
+- domain: hdfs
+  type: '-'
+  item: nproc
+  value:  32768
+- domain: mapred
+  type: '-'
+  item: nofile
+  value:  32768
+- domain: mapred
+  type: '-'
+  item: nproc
+  value:  32768
+- domain: hbase
+  type: '-'
+  item: nofile
+  value:  32768
+- domain: hbase
+  type: '-'
+  item: nproc
+  value:  32768
+

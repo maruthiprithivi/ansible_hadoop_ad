@@ -1,0 +1,12 @@
+---
+ansible_ssh_user: ec2-user
+ansible_sudo: true
+
+ntp_servers:
+- 0.au.pool.ntp.org
+- 1.au.pool.ntp.org
+- 2.au.pool.ntp.org
+- 3.au.pool.ntp.org
+
+hostname: "{{ hostvars[inventory_hostname]['ec2_tag_Name'] }}"
+primary_ip: "{{ ansible_default_ipv4.address }}"

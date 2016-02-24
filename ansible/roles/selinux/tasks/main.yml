@@ -1,0 +1,6 @@
+---
+- name: install libselinux-python
+  yum: pkg=libselinux-python state=latest
+
+- name: set selinux policy and state
+  action: selinux "{{ selinux_policy }}" "{{ selinux_state }}"

@@ -1,0 +1,4 @@
+---
+- hosts: tag_Ansible_Group_cdhmgr
+  roles:
+    - cloudera_mgr_server

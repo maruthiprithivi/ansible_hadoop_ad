@@ -1,0 +1,21 @@
+---
+- name: ensure cloudera-manager-daemons is at the latest version
+  yum: pkg=cloudera-manager-daemons state=latest
+
+- name: ensure cloudera-manager-server is at the latest version
+  yum: pkg=cloudera-manager-server state=latest
+
+- name: copy cloudera DB setup sql script
+  template: src=create_cdh_dbs.sql.j2 dest=/tmp/create_cdh_dbs.sql owner=postgres group=postgres mode=0644
+
+- name: run cloudera DB setup sql script
+  command: "psql -f /tmp/create_cdh_dbs.sql"
+  sudo: yes
+  sudo_user: postgres
+
+- name: remove cloudera DB setup sql script
+  file: state=absent path=/tmp/create_cdh_dbs.sql
+
+- name: configure cloudera manager databases
+  command: "/usr/share/cmf/schema/scm_prepare_database.sh -h {{ scm_db_host }} -P {{ scm_db_port }} {{ scm_db_type }} {{ scm_db_name }} {{ scm_db_user }} {{ scm_db_user_password }} creates={{ scm_done_file }}"
+

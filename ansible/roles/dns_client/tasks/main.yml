@@ -1,0 +1,5 @@
+---
+- name: set dns server in resolv
+  lineinfile: dest=/etc/resolv.conf regexp="^nameserver\s+.*" line="nameserver {{ dns_server }}" state=present
+  when: dns_server is defined
+

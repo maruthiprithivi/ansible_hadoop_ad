@@ -1,0 +1,6 @@
+---
+- name: ensure iptables is at the latest version
+  yum: pkg=iptables state=latest
+
+- name: ensure iptables in configured state
+  service: name=iptables state={{ iptables_state }} enabled={{ iptables_enabled }}

@@ -1,0 +1,12 @@
+---
+- name: copy oozie DB setup sql script
+  template: src=create_oozie_db.sql.j2 dest=/tmp/create_oozie_db.sql owner=postgres group=postgres mode=0644
+
+- name: run oozie DB setup sql script
+  command: "psql -f /tmp/create_oozie_db.sql"
+  sudo: yes
+  sudo_user: postgres
+
+- name: remove oozie DB setup sql script
+  file: state=absent path=/tmp/create_oozie_db.sql
+

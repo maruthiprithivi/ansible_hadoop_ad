@@ -1,0 +1,3 @@
+---
+cloudera_mgr_server: localhost
+cloudera_mgr_port: 7182

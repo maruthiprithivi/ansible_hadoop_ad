@@ -1,0 +1,3 @@
+---
+- include: all_hosts.yml
+- include: cloudera_mgr.yml

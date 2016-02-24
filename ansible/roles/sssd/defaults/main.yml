@@ -1,0 +1,4 @@
+---
+domainname: example.com
+ad_server: "ad.{{ domainname }}"
+
