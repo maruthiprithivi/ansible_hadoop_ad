@@ -1,0 +1,8 @@
+---
+mysql_root_user:      root
+mysql_root_password:  root
+
+hue_db_name:          hue
+hue_db_user:          hue
+hue_db_user_password: hue_password
+hue_db_encoding:      utf8

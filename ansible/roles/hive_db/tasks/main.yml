@@ -10,3 +10,19 @@
 - name: remove hive DB setup sql script
   file: state=absent path=/tmp/create_hive_db.sql
 
+- name:     add hive database to mysql
+  mysql_db: name={{ hive_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+            encoding={{ hive_db_encoding }}
+
+- name:       add hive database user to mysql
+  mysql_user: name={{ hive_db_user }}
+              host='%'
+              password={{ hive_db_user_password }}
+              state=present
+              priv={{ hive_db_name }}.*:ALL
+              login_user={{ mysql_root_user }}
+              login_password={{ mysql_root_password }}
+

@@ -13,4 +13,5 @@
     - cdh_repos
     - oracle_jdk
     - postgresql_client
+    - mysql_client
     - dns_client

@@ -1,0 +1,23 @@
+---
+- hosts: all
+  vars:
+    jkspass: jAyKay3s5
+  tasks:
+  - name: export server cert to p12
+    shell: keytool -importkeystore -srckeystore /opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks -srcstorepass {{ jkspass }} -srckeypass {{ jkspass }} -destkeystore /tmp/{{ ansible_hostname }}-keystore.p12 -deststoretype PKCS12 -srcalias {{ ansible_hostname }} -deststorepass {{ jkspass }} -destkeypass {{ jkspass }} creates=/tmp/{{ ansible_hostname }}-keystore.p12
+  - name: extract key from p12
+    shell: openssl pkcs12 -in /tmp/{{ ansible_hostname }}-keystore.p12 -passin pass:{{ jkspass }} -nocerts -out /opt/cloudera/security/x509/{{ ansible_hostname }}.key -passout pass:{{ jkspass }} creates=/opt/cloudera/security/x509/{{ ansible_hostname }}.key
+  - name: symlink key
+    file: src=/opt/cloudera/security/x509/{{ ansible_hostname }}.key dest=/opt/cloudera/security/x509/key.pem state=link
+  - name: strip key password
+    shell: openssl rsa -in /opt/cloudera/security/x509/{{ ansible_hostname }}.key -passin pass:{{ jkspass }} -out /opt/cloudera/security/x509/{{ ansible_hostname }}.keynopw
+  - name: symlinnk nopwkey
+    file: src=/opt/cloudera/security/x509/{{ ansible_hostname }}.keynopw dest=/opt/cloudera/security/x509/keynopw.pem state=link
+  - name: symlinnk server cert
+    file: src=/opt/cloudera/security/x509/{{ ansible_hostname }}.pem dest=/opt/cloudera/security/x509/cert.pem state=link
+  - name: create password file
+    shell: echo {{ jkspass }} > /etc/cloudera-scm-agent/agentkey.pw creates=/etc/cloudera-scm-agent/agentkey.pw
+  - name: fix password file perms
+    file: path=/etc/cloudera-scm-agent/agentkey.pw owner=cloudera-scm group=cloudera-scm mode=0400
+
+

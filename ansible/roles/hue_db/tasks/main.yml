@@ -1,0 +1,28 @@
+---
+- name: copy hue DB setup sql script
+  template: src=create_hue_db.sql.j2 dest=/tmp/create_hue_db.sql owner=postgres group=postgres mode=0644
+
+- name: run hue DB setup sql script
+  command: "psql -f /tmp/create_hue_db.sql"
+  sudo: yes
+  sudo_user: postgres
+
+- name: remove hue DB setup sql script
+  file: state=absent path=/tmp/create_hue_db.sql
+
+- name:     add hue database to mysql
+  mysql_db: name={{ hue_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+            encoding={{ hue_db_encoding }}
+
+- name:       add hue database user to mysql
+  mysql_user: name={{ hue_db_user }}
+              host='%'
+              password={{ hue_db_user_password }}
+              state=present
+              priv={{ hue_db_name }}.*:ALL
+              login_user={{ mysql_root_user }}
+              login_password={{ mysql_root_password }}
+

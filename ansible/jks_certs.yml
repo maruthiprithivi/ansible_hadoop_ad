@@ -1,0 +1,22 @@
+---
+- hosts: all
+  vars:
+    jkspass: jAyKay3s5
+  tasks:
+  - name: copy AD root CA
+    copy: src=/Users/sjj/RDP/certs/x509/AD-CA.cer dest=/opt/cloudera/security/CAcerts owner=root group=root mode=0644
+  - name: copy server PEM to remote
+    copy: src=/Users/sjj/RDP/certs/x509/{{ ansible_hostname }}.pem dest=/opt/cloudera/security/x509/ owner=root group=root mode=0644
+  - name: import RootCA into keystore
+    shell: keytool -importcert -noprompt -trustcacerts -alias RootCA -keystore /opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks -file /opt/cloudera/security/CAcerts/AD-CA.cer -storepass {{ jkspass }}
+  - name: import server cert into keystore
+    shell: keytool -importcert -noprompt -keystore /opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks -alias {{ ansible_hostname }} -storepass {{ jkspass }} -keypass {{ jkspass }} -trustcacerts -file /opt/cloudera/security/x509/{{ ansible_hostname }}.pem
+  - name: symlink keystore
+    file: src=/opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks dest=/opt/cloudera/security/jks/keystore.jks state=link
+  - name: copy jssecacerts
+    shell: cp -rp /usr/java/latest/jre/lib/security/cacerts /usr/java/latest/jre/lib/security/jssecacerts creates=/usr/java/latest/jre/lib/security/jssecacerts
+  - name: add root CA to jssecacerts
+    shell: keytool -importcert -noprompt -alias RootCA -keystore /usr/java/latest/jre/lib/security/jssecacerts -file /opt/cloudera/security/CAcerts/AD-CA.cer -storepass changeit
+
+
+

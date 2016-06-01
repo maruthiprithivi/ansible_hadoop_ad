@@ -18,6 +18,9 @@ tag_Name_cdhmaster01
 [sqoop:children]
 tag_Name_cdhmaster01
 
+[hue:children]
+tag_Name_cdhmaster03
+
 [tag_Ansible_Group_cdhmgr]
 [tag_Ansible_Group_cdhgw]
 [tag_Ansible_Group_cdhmaster]

@@ -1,6 +1,6 @@
 ---
-- hosts: sqoop
+- hosts: hue
   roles:
     - postgresql_server
     - mysql_server
-    - sqoop_db
+    - hue_db

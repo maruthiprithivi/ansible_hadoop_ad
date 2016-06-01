@@ -1,0 +1,8 @@
+---
+mysql_root_user:      root
+mysql_root_password:  root
+
+sqoop_db_name:          sqoop
+sqoop_db_user:          sqoop
+sqoop_db_user_password: sqoop_password
+sqoop_db_encoding:      utf8

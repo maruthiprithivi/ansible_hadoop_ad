@@ -1,0 +1,45 @@
+---
+- name:          ensure mysql server is at the latest version
+  yum:           pkg={{ mysql_server_pkg }}
+                 state=latest
+
+- name:          ensure mysql python is at the latest version
+  yum:           pkg={{ mysql_python_pkg }}
+                 state=latest
+
+
+- name:          ensure mysql server is running
+  service:       name={{ mysql_service }}
+                 state=running
+                 enabled=yes
+
+- name:          test if mysql root password is empty
+  shell:         /bin/echo "quit" | /usr/bin/mysql -u {{ mysql_root_user }}
+  ignore_errors: True
+  register:      mysql_root_password_result
+
+
+- name:          set mysql root password
+  shell:         mysql -u {{ mysql_root_user }} -NBe "UPDATE mysql.user SET Password = PASSWORD('{{ mysql_root_password }}') WHERE User = '{{ mysql_root_user }}'; FLUSH PRIVILEGES;"
+  when:          mysql_root_password_result|success
+
+- name:          remove anonymous mysql localhost user
+  mysql_user:    name=''
+                 host=localhost
+                 state=absent
+                 login_user={{ mysql_root_user }}
+                 login_password={{ mysql_root_password }}
+
+- name:          remove anonymous mysql fqdn user
+  mysql_user:    name=''
+                 host={{ ansible_fqdn }}
+                 state=absent
+                 login_user={{ mysql_root_user }}
+                 login_password={{ mysql_root_password }}
+
+- name:          remove test mysql database
+  mysql_db:      name={{ mysql_db_test }}
+                 state=absent
+                 login_user={{ mysql_root_user }}
+                 login_password={{ mysql_root_password }}
+

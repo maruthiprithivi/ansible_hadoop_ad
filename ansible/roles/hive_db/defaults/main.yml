@@ -1,0 +1,8 @@
+---
+mysql_root_user:      root
+mysql_root_password:  root
+
+hive_db_name:          metastore
+hive_db_user:          hive
+hive_db_user_password: hive_password
+hive_db_encoding:      utf8

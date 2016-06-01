@@ -12,7 +12,7 @@ IPV6INIT_on_present: present
 
 domainname: cdh.hadoop
 
-ad_ip: 10.100.128.53
+ad_ip: 10.100.128.153
 ad_hostname: "ad01.{{ domainname }}"
 
 dns_server: "{{ ad_ip }}"

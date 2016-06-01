@@ -2,3 +2,4 @@
 - hosts: tag_Ansible_Group_cdhmgr
   roles:
     - postgresql_server
+    - mysql_server

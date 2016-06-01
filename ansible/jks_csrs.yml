@@ -1,0 +1,19 @@
+---
+- hosts: all
+  vars:
+    jkspass: jAyKay3s5
+  tasks:
+  - name: create /opt/cloudera/security
+    file: path=/opt/cloudera/security owner=root group=root mode=0755 state=directory
+  - name: create /opt/cloudera/security/jks
+    file: path=/opt/cloudera/security/jks owner=root group=root mode=0755 state=directory
+  - name: create /opt/cloudera/security/x509
+    file: path=/opt/cloudera/security/x509 owner=root group=root mode=0755 state=directory
+  - name: create /opt/cloudera/security/CAcerts
+    file: path=/opt/cloudera/security/CAcerts owner=root group=root mode=0755 state=directory
+  - name: create keystore keypair
+    shell: keytool -genkeypair -alias {{ ansible_hostname }}  -keyalg RSA -keystore /opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks -keysize 2048 -dname "CN={{ ansible_fqdn }},OU=Technical,O=CBIG,L=Sydney,ST=NSW,C=AU" -storepass {{ jkspass }} -keypass {{ jkspass }} creates=/opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks
+  - name: create csr
+    shell: keytool -certreq -alias {{ ansible_hostname }} -keystore /opt/cloudera/security/jks/{{ ansible_hostname }}-keystore.jks -file /opt/cloudera/security/x509/{{ ansible_hostname }}.csr -storepass {{ jkspass }} -keypass {{ jkspass }} creates=/opt/cloudera/security/x509/{{ ansible_hostname }}.csr
+  - name: copy csr to local
+    fetch: src=/opt/cloudera/security/x509/{{ ansible_hostname }}.csr dest=/Users/sjj/RDP/certs/csr/ flat=yes

@@ -5,17 +5,108 @@
 - name: ensure cloudera-manager-server is at the latest version
   yum: pkg=cloudera-manager-server state=latest
 
-- name: copy cloudera DB setup sql script
+- name: copy cloudera postgres DB setup sql script
   template: src=create_cdh_dbs.sql.j2 dest=/tmp/create_cdh_dbs.sql owner=postgres group=postgres mode=0644
 
-- name: run cloudera DB setup sql script
+- name: run cloudera postgres DB setup sql script
   command: "psql -f /tmp/create_cdh_dbs.sql"
   sudo: yes
   sudo_user: postgres
 
-- name: remove cloudera DB setup sql script
+- name: remove cloudera postgres DB setup sql script
   file: state=absent path=/tmp/create_cdh_dbs.sql
 
+- name:     add scm database to mysql
+  mysql_db: name={{ scm_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add scm database user to mysql
+  mysql_user: name={{ scm_db_user }}
+             host='%'
+             password={{ scm_db_user_password }}
+             state=present
+             priv={{ scm_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
+- name:     add amon database to mysql
+  mysql_db: name={{ amon_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add amon database user to mysql
+  mysql_user: name={{ amon_db_user }}
+             host='%'
+             password={{ amon_db_user_password }}
+             state=present
+             priv={{ amon_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
+- name:     add rman database to mysql
+  mysql_db: name={{ rman_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add rman database user to mysql
+  mysql_user: name={{ rman_db_user }}
+             host='%'
+             password={{ rman_db_user_password }}
+             state=present
+             priv={{ rman_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
+- name:     add sentry database to mysql
+  mysql_db: name={{ sentry_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add sentry database user to mysql
+  mysql_user: name={{ sentry_db_user }}
+             host='%'
+             password={{ sentry_db_user_password }}
+             state=present
+             priv={{ sentry_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
+- name:     add nav database to mysql
+  mysql_db: name={{ nav_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add nav database user to mysql
+  mysql_user: name={{ nav_db_user }}
+             host='%'
+             password={{ nav_db_user_password }}
+             state=present
+             priv={{ nav_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
+- name:     add navms database to mysql
+  mysql_db: name={{ navms_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+
+- name:      add navms database user to mysql
+  mysql_user: name={{ navms_db_user }}
+             host='%'
+             password={{ navms_db_user_password }}
+             state=present
+             priv={{ navms_db_name }}.*:ALL
+             login_user={{ mysql_root_user }}
+             login_password={{ mysql_root_password }}
+
 - name: configure cloudera manager databases
-  command: "/usr/share/cmf/schema/scm_prepare_database.sh -h {{ scm_db_host }} -P {{ scm_db_port }} {{ scm_db_type }} {{ scm_db_name }} {{ scm_db_user }} {{ scm_db_user_password }} creates={{ scm_done_file }}"
+#  command: "/usr/share/cmf/schema/scm_prepare_database.sh -h {{ scm_db_host }} -P {{ scm_db_port }} {{ scm_db_type }} {{ scm_db_name }} {{ scm_db_user }} {{ scm_db_user_password }} creates={{ scm_done_file }}"
+  command: "/usr/share/cmf/schema/scm_prepare_database.sh -h {{ scm_db_host }} {{ scm_db_type }} {{ scm_db_name }} {{ scm_db_user }} {{ scm_db_user_password }} creates={{ scm_done_file }}"
 

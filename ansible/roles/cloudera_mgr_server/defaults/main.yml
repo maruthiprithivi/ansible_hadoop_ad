@@ -1,9 +1,31 @@
 ---
-scm_db_type: postgresql
-scm_db_name: scm
-scm_db_user: scm
+scm_db_type:          mysql
+scm_db_name:          scm
+scm_db_user:          scm
 scm_db_user_password: scm_password
-scm_db_host: cdhmgr01.{{ domainname }}
-scm_db_port: 5432
-scm_done_file: '/etc/cloudera-scm-server/db.properties.~1~'
+scm_db_host:          cdhmgr01.{{ domainname }}
+scm_db_port:          5432
+scm_done_file:        '/etc/cloudera-scm-server/db.properties.~1~'
+mysql_root_user:      root
+mysql_root_password:  root
+
+amon_db_name:          amon
+amon_db_user:          amon
+amon_db_user_password: amon_password
+
+rman_db_name:          rman
+rman_db_user:          rman
+rman_db_user_password: rman_password
+
+sentry_db_name:          sentry
+sentry_db_user:          sentry
+sentry_db_user_password: sentry_password
+
+nav_db_name:          nav
+nav_db_user:          nav
+nav_db_user_password: nav_password
+
+navms_db_name:          navms
+navms_db_user:          navms
+navms_db_user_password: navms_password
 

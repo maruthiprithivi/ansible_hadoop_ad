@@ -1,0 +1,8 @@
+---
+mysql_root_user:      root
+mysql_root_password:  root
+
+oozie_db_name:          oozie
+oozie_db_user:          oozie
+oozie_db_user_password: oozie_password
+oozie_db_encoding:      utf8

@@ -7,6 +7,13 @@
               regexp='(^\s+kernel(\s+(?!transparent_hugepage=never)[\w=/\-\.]+)*)\s*$'
               line='\1 transparent_hugepage=never'
 
+- name: disable transparent huge pages in rc.local
+  lineinfile: dest=/etc/rc.local
+              backup=True
+              state=present
+              insertafter=EOF
+              line='echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag'
+
 - name: test if transparent huge pages is enabled in /sys/kernel/mm/transparent_hugepage/enabled
   command: /bin/egrep  '\[never\]' /sys/kernel/mm/transparent_hugepage/enabled
   register: transparent_hugepage_enabled_result

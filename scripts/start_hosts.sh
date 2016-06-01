@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+OWNER=SteveJohansen
+
 INSTANCE_IDS=""
-for INSTANCE_ID in `aws ec2 describe-instances --output table --filters Name=tag:Owner,Values=TelkomselFMS | grep InstanceId | sed 's/.*\(i-[0-9a-z]*\) *.*/\1/'`
+for INSTANCE_ID in `aws ec2 describe-instances --output table --filters Name=tag:Owner,Values=${OWNER} | grep InstanceId | sed 's/.*\(i-[0-9a-z]*\) *.*/\1/'`
 do
   INSTANCE_IDS="${INSTANCE_IDS} ${INSTANCE_ID}"
 done

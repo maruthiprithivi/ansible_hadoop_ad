@@ -1,0 +1,9 @@
+---
+mysql_pkg: mysql
+mysql_jdbc_download_folder: /tmp
+mysql_jdbc_archive: mysql-connector-java-5.1.38.zip
+mysql_jdbc_url: http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.zip
+mysql_jdbc_jar_zip: mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar
+mysql_jdbc_dest: /usr/share/java
+mysql_jdbc_link: mysql-connector-java.jar
+mysql_jdbc_jar: mysql-connector-java-5.1.38-bin.jar

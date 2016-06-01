@@ -1,0 +1,37 @@
+---
+- name: ensure mysql is at the latest version
+  yum: pkg={{ mysql_pkg }} state=latest
+
+- name: ensure wget is at the latest version
+  yum: pkg=wget state=latest
+
+- name: ensure unzip is at the latest version
+  yum: pkg=unzip state=latest
+
+- name: test if mysql jdbc is installed
+  command: stat {{ mysql_jdbc_dest }}/{{ mysql_jdbc_jar }}
+  ignore_errors: True
+  register: jdbc_exists_result
+
+- name: download mysql jdbc driver
+  get_url: url={{ mysql_jdbc_url }}
+           dest={{ mysql_jdbc_download_folder }}
+  when: jdbc_exists_result|failed
+
+- name: ensure java jdbc directory exists
+  file: path={{ mysql_jdbc_dest }}
+        state=directory
+
+- name:  unpack mysql jdbc driver
+  shell: unzip -j "{{ mysql_jdbc_download_folder }}/{{ mysql_jdbc_archive }}" "{{ mysql_jdbc_jar_zip }}" -d "{{ mysql_jdbc_dest }}" creates="{{ mysql_jdbc_dest }}/{{ mysql_jdbc_jar }}"
+  when: jdbc_exists_result|failed
+
+- name: remove mysql jdbc zip file
+  file: path={{ mysql_jdbc_dest }}/{{ mysql_jdbc_archive }} state=absent
+  when: jdbc_exists_result|failed
+
+- name: ensure symlink exists for mysql jdbc driver
+  file: path={{ mysql_jdbc_dest }}/{{ mysql_jdbc_link }}
+        state=link
+        src={{ mysql_jdbc_dest }}/{{ mysql_jdbc_jar }}
+

@@ -10,3 +10,19 @@
 - name: remove oozie DB setup sql script
   file: state=absent path=/tmp/create_oozie_db.sql
 
+- name:     add oozie database to mysql
+  mysql_db: name={{ oozie_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+            encoding={{ oozie_db_encoding }}
+
+- name:       add oozie database user to mysql
+  mysql_user: name={{ oozie_db_user }}
+              host='%'
+              password={{ oozie_db_user_password }}
+              state=present
+              priv={{ oozie_db_name }}.*:ALL
+              login_user={{ mysql_root_user }}
+              login_password={{ mysql_root_password }}
+

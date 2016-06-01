@@ -10,3 +10,19 @@
 - name: remove sqoop DB setup sql script
   file: state=absent path=/tmp/create_sqoop_db.sql
 
+- name:     add sqoop database to mysql
+  mysql_db: name={{ sqoop_db_name }}
+            state=present
+            login_user={{ mysql_root_user }}
+            login_password={{ mysql_root_password }}
+            encoding={{ sqoop_db_encoding }}
+
+- name:       add sqoop database user to mysql
+  mysql_user: name={{ sqoop_db_user }}
+              host='%'
+              password={{ sqoop_db_user_password }}
+              state=present
+              priv={{ sqoop_db_name }}.*:ALL
+              login_user={{ mysql_root_user }}
+              login_password={{ mysql_root_password }}
+
